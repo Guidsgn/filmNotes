@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Minhas Reviews — film notes</title>
+  <title>Minhas Reviews — FilmNotes</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
@@ -24,7 +24,8 @@
         <span class="icon">&#9906;</span>
         <input type="text" id="navSearchInput" placeholder="Buscar...">
       </div>
-      <button class="nav-menu-btn" id="navMenuBtn">☰</button>
+      <button type="button" class="nav-settings-btn" onclick="Utils.openSettingsModal()" title="Configurações">⚙</button>
+      <button type="button" class="nav-menu-btn" id="navMenuBtn">☰</button>
     </div>
   </nav>
 
@@ -62,8 +63,8 @@
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
       <div id="reviewsCount" style="font-size:0.825rem;color:var(--text-muted)"></div>
       <div style="display:flex;gap:6px">
-        <button class="btn btn-ghost btn-sm active" id="viewList" title="Lista">☰ Lista</button>
-        <button class="btn btn-ghost btn-sm" id="viewGrid" title="Grade">⊞ Grade</button>
+        <button type="button" class="btn btn-ghost btn-sm active" id="viewBlog" title="Blog">☰ Blog</button>
+        <button type="button" class="btn btn-ghost btn-sm" id="viewGrid" title="Grade">⊞ Grade</button>
       </div>
     </div>
 
@@ -89,6 +90,7 @@
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/config.js"></script>
   <script src="js/storage.js"></script>
   <script src="js/utils.js"></script>

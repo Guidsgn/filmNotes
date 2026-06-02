@@ -1,18 +1,17 @@
 let activeType = 'all';
-let lastQuery = '';
+let reviewMap = new Map();
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   Utils.setupNavSearch();
+  Utils.setupMobileMenu();
   Utils.checkApiKey();
-  setupMobileMenu();
+
+  // Pre-load existing reviews to show "already reviewed" badge
+  const all = await Storage.getAll();
+  reviewMap = new Map(all.map(r => [`${r.type}_${r.workId}`, r]));
 
   const params = Utils.params();
   const input = document.getElementById('searchInput');
-
-  if (params.q) {
-    input.value = params.q;
-    lastQuery = params.q;
-  }
 
   if (params.type) {
     activeType = params.type;
@@ -25,14 +24,11 @@ document.addEventListener('DOMContentLoaded', () => {
   input.addEventListener('input', Utils.debounce(handleSearch, 450));
   input.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleSearch(); });
 
-  if (params.q) handleSearch();
+  if (params.q) {
+    input.value = params.q;
+    handleSearch();
+  }
 });
-
-function setupMobileMenu() {
-  const btn = document.getElementById('navMenuBtn');
-  const links = document.getElementById('navLinks');
-  if (btn && links) btn.addEventListener('click', () => links.classList.toggle('open'));
-}
 
 function setupChips() {
   document.querySelectorAll('.type-chips .chip').forEach(chip => {
@@ -40,38 +36,26 @@ function setupChips() {
       document.querySelectorAll('.type-chips .chip').forEach(c => c.classList.remove('active'));
       chip.classList.add('active');
       activeType = chip.dataset.type;
-      if (lastQuery) handleSearch();
+      const q = document.getElementById('searchInput').value.trim();
+      if (q) handleSearch();
     });
   });
 }
 
 async function handleSearch() {
   const q = document.getElementById('searchInput').value.trim();
-  if (!q) {
-    showState('empty');
-    return;
-  }
-  lastQuery = q;
+  if (!q) { showState('empty'); return; }
+
   showState('loading');
 
   try {
     let results = [];
+    if (activeType === 'all') results = await API.searchAll(q);
+    else if (activeType === 'movie') results = await API.searchMovies(q);
+    else if (activeType === 'series') results = await API.searchSeries(q);
+    else if (activeType === 'book') results = await API.searchBooks(q);
 
-    if (activeType === 'all') {
-      results = await API.searchAll(q);
-    } else if (activeType === 'movie') {
-      results = await API.searchMovies(q);
-    } else if (activeType === 'series') {
-      results = await API.searchSeries(q);
-    } else if (activeType === 'book') {
-      results = await API.searchBooks(q);
-    }
-
-    if (results.length === 0) {
-      showState('noResults');
-      return;
-    }
-
+    if (!results.length) { showState('noResults'); return; }
     showState('results');
     renderResults(results, q);
   } catch (err) {
@@ -82,14 +66,11 @@ async function handleSearch() {
 }
 
 function renderResults(results, q) {
-  const container = document.getElementById('resultsContainer');
-  const count = document.getElementById('resultsCount');
+  document.getElementById('resultsCount').textContent =
+    `${results.length} resultado${results.length !== 1 ? 's' : ''} para "${q}"`;
 
-  count.textContent = `${results.length} resultado${results.length !== 1 ? 's' : ''} para "${q}"`;
-
-  container.innerHTML = results.map(item => {
-    const review = Storage.get(item.id, item.type);
-    const hasReview = !!review;
+  document.getElementById('resultsContainer').innerHTML = results.map(item => {
+    const review = reviewMap.get(`${item.type}_${item.id}`);
     const authors = item.authors?.length ? item.authors.slice(0, 2).join(', ') : '';
 
     const poster = item.poster
@@ -99,12 +80,11 @@ function renderResults(results, q) {
     const meta = [
       Utils.typeBadge(item.type),
       item.year ? `<span>${item.year}</span>` : '',
-      (item.type === 'movie' || item.type === 'series') && item.tmdbRating
-        ? `<span style="color:var(--star)">★ ${item.tmdbRating}</span>` : '',
+      item.tmdbRating ? `<span style="color:var(--star)">★ ${item.tmdbRating}</span>` : '',
       authors ? `<span>${authors}</span>` : '',
     ].filter(Boolean).join('<span class="dot"> · </span>');
 
-    const reviewBadge = hasReview
+    const reviewBadge = review
       ? `<div class="result-has-review">✓ Review salva${review.rating ? ` — ${review.rating}/5` : ''}</div>` : '';
 
     return `
@@ -113,7 +93,7 @@ function renderResults(results, q) {
         <div class="result-body">
           <div class="result-title">${item.title}</div>
           <div class="result-meta">${meta}</div>
-          ${item.overview ? `<div class="result-overview">${Utils.truncate(item.overview, 120)}</div>` : ''}
+          ${item.overview ? `<div class="result-overview">${Utils.truncate(item.overview, 130)}</div>` : ''}
           ${reviewBadge}
         </div>
       </a>`;

@@ -1,31 +1,25 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   Utils.setupNavSearch();
+  Utils.setupMobileMenu();
   Utils.checkApiKey();
-  setupMobileMenu();
-  loadStats();
-  loadReviews();
   setupHeroSearch();
+  await loadAll();
 });
 
-function setupMobileMenu() {
-  const btn = document.getElementById('navMenuBtn');
-  const links = document.getElementById('navLinks');
-  if (btn && links) {
-    btn.addEventListener('click', () => links.classList.toggle('open'));
-  }
+async function loadAll() {
+  const [stats, all] = await Promise.all([Storage.getStats(), Storage.getAll()]);
+  renderStats(stats);
+  renderReviews(all);
 }
 
-function loadStats() {
-  const stats = Storage.getStats();
+function renderStats(stats) {
   document.getElementById('statTotal').textContent = stats.total;
   document.getElementById('statMovies').textContent = stats.movies;
   document.getElementById('statSeries').textContent = stats.series;
   document.getElementById('statBooks').textContent = stats.books;
 }
 
-function loadReviews() {
-  const all = Storage.getAll();
-
+function renderReviews(all) {
   if (all.length === 0) {
     document.getElementById('emptyState').style.display = '';
     document.getElementById('recentSection').style.display = 'none';
@@ -33,25 +27,18 @@ function loadReviews() {
   }
 
   document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('recentGrid').innerHTML = all.slice(0, 8).map(r => Utils.workCardHTML(r)).join('');
 
-  // Recent (all types, max 8)
-  const recentGrid = document.getElementById('recentGrid');
-  recentGrid.innerHTML = all.slice(0, 8).map(r => Utils.workCardHTML(r)).join('');
-
-  // By type
-  const movies = all.filter(r => r.type === 'movie');
-  const series = all.filter(r => r.type === 'series');
-  const books = all.filter(r => r.type === 'book');
-
-  const fillSection = (items, sectionId, gridId, max = 6) => {
-    if (items.length === 0) return;
+  const fill = (type, sectionId, gridId) => {
+    const items = all.filter(r => r.type === type).slice(0, 6);
+    if (!items.length) return;
     document.getElementById(sectionId).style.display = '';
-    document.getElementById(gridId).innerHTML = items.slice(0, max).map(r => Utils.workCardHTML(r)).join('');
+    document.getElementById(gridId).innerHTML = items.map(r => Utils.workCardHTML(r)).join('');
   };
 
-  fillSection(movies, 'moviesSection', 'moviesGrid');
-  fillSection(series, 'seriesSection', 'seriesGrid');
-  fillSection(books, 'booksSection', 'booksGrid');
+  fill('movie', 'moviesSection', 'moviesGrid');
+  fill('series', 'seriesSection', 'seriesGrid');
+  fill('book', 'booksSection', 'booksGrid');
 }
 
 function setupHeroSearch() {
