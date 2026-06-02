@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Minhas Reviews — FilmNotes</title>
+  <title>Minhas Reviews — film notes</title>
+  <link rel="icon" type="image/png" href="imgs/iconFilmNote-colored.png">
+  <link rel="apple-touch-icon" href="imgs/iconFilmNote-colored.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
@@ -11,10 +13,12 @@
 </head>
 <body>
 
-  <!-- Navbar -->
   <nav class="site-nav">
     <div class="nav-inner">
-      <a class="nav-brand" href="index.html">film <span>notes</span></a>
+      <a class="nav-brand" href="index.html">
+        <img src="imgs/iconFilmNote-colored.png" alt="">
+        film <span>notes</span>
+      </a>
       <div class="nav-links" id="navLinks">
         <a class="nav-link" href="index.html">Início</a>
         <a class="nav-link active" href="reviews.html">Minhas Reviews</a>
@@ -30,26 +34,23 @@
   </nav>
 
   <div class="container">
-    <!-- Page header -->
     <div class="reviews-page-header">
       <div>
         <h1 class="reviews-page-title">Minhas Reviews</h1>
-        <p style="color:var(--text-muted);font-size:0.875rem;margin-top:4px" id="reviewsSubtitle"></p>
+        <p class="reviews-subtitle" id="reviewsSubtitle"></p>
       </div>
       <a href="search.html" class="btn btn-primary">+ Nova review</a>
     </div>
 
-    <!-- Filters -->
     <div class="filter-row">
       <span class="filter-label">Filtrar:</span>
-      <button class="chip active" data-filter="all">Tudo</button>
-      <button class="chip" data-filter="movie">🎬 Filmes</button>
-      <button class="chip" data-filter="series">📺 Séries</button>
-      <button class="chip" data-filter="book">📚 Livros</button>
-
-      <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
+      <button type="button" class="chip active" data-filter="all">Tudo</button>
+      <button type="button" class="chip" data-filter="movie">🎬 Filmes</button>
+      <button type="button" class="chip" data-filter="series">📺 Séries</button>
+      <button type="button" class="chip" data-filter="book">📚 Livros</button>
+      <div class="filter-row-sort">
         <span class="filter-label">Ordenar:</span>
-        <select class="sort-select" id="sortSelect">
+        <select class="sort-select" id="sortSelect" title="Ordenar reviews">
           <option value="recent">Mais recentes</option>
           <option value="rating_desc">Maior nota</option>
           <option value="rating_asc">Menor nota</option>
@@ -59,33 +60,32 @@
       </div>
     </div>
 
-    <!-- View toggle -->
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
-      <div id="reviewsCount" style="font-size:0.825rem;color:var(--text-muted)"></div>
-      <div style="display:flex;gap:6px">
+    <div class="view-toggle-row">
+      <div class="reviews-count" id="reviewsCount"></div>
+      <div class="view-btns">
         <button type="button" class="btn btn-ghost btn-sm active" id="viewBlog" title="Blog">☰ Blog</button>
         <button type="button" class="btn btn-ghost btn-sm" id="viewGrid" title="Grade">⊞ Grade</button>
       </div>
     </div>
 
-    <!-- Reviews container -->
     <div id="reviewsContainer"></div>
 
-    <!-- Empty state -->
-    <div class="empty-state" id="emptyState" style="display:none">
+    <div class="empty-state" id="emptyState" hidden>
       <div class="empty-icon">📝</div>
       <div class="empty-title" id="emptyTitle">Nenhuma review</div>
       <div class="empty-text" id="emptyText">Comece explorando obras para adicionar suas reviews.</div>
-      <a href="search.html" class="btn btn-primary" style="margin-top:8px">Explorar obras</a>
+      <a href="search.html" class="btn btn-primary btn-mt">Explorar obras</a>
     </div>
   </div>
 
-  <!-- Toast -->
   <div class="toast-wrap" id="toastWrap"></div>
 
   <footer class="site-footer">
     <div class="footer-inner">
-      <div class="footer-brand">film <span>notes</span></div>
+      <div class="footer-brand">
+        <img src="imgs/iconFilmNote-colored.png" alt="">
+        film <span>notes</span>
+      </div>
       <div class="footer-text">Reviews pessoais • Dados: TMDB & Google Books</div>
     </div>
   </footer>

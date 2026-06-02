@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Obra — FilmNotes</title>
+  <title>Obra — film notes</title>
+  <link rel="icon" type="image/png" href="imgs/iconFilmNote-colored.png">
+  <link rel="apple-touch-icon" href="imgs/iconFilmNote-colored.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
@@ -11,10 +13,12 @@
 </head>
 <body>
 
-  <!-- Navbar -->
   <nav class="site-nav">
     <div class="nav-inner">
-      <a class="nav-brand" href="index.html">film <span>notes</span></a>
+      <a class="nav-brand" href="index.html">
+        <img src="imgs/iconFilmNote-colored.png" alt="">
+        film <span>notes</span>
+      </a>
       <div class="nav-links" id="navLinks">
         <a class="nav-link" href="index.html">Início</a>
         <a class="nav-link" href="reviews.html">Minhas Reviews</a>
@@ -29,32 +33,27 @@
     </div>
   </nav>
 
-  <!-- Backdrop -->
   <div class="work-backdrop-wrap" id="backdropWrap">
     <div class="work-backdrop-overlay"></div>
   </div>
 
-  <!-- Loading state -->
   <div class="loading-center" id="loadingState">
     <div class="spinner"></div>
   </div>
 
-  <!-- Work detail (hidden until loaded) -->
-  <div style="display:none" id="workContent">
+  <div class="work-detail-hidden" id="workContent">
     <div class="container">
       <div class="work-detail-wrap">
 
-        <!-- Breadcrumb -->
-        <nav style="margin-bottom:24px;font-size:0.8rem;color:var(--text-dim)">
-          <a href="index.html" style="color:var(--text-muted)">Início</a>
-          <span style="margin:0 8px">›</span>
-          <a href="search.html" style="color:var(--text-muted)">Explorar</a>
-          <span style="margin:0 8px">›</span>
+        <nav class="work-breadcrumb">
+          <a href="index.html">Início</a>
+          <span class="sep">›</span>
+          <a href="search.html">Explorar</a>
+          <span class="sep">›</span>
           <span id="breadcrumbTitle"></span>
         </nav>
 
-        <!-- Poster + Info -->
-        <div style="display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap">
+        <div class="work-content-row">
           <div class="work-poster-col">
             <div id="workPoster"></div>
           </div>
@@ -65,17 +64,14 @@
             <div class="work-genres" id="workGenres"></div>
             <p class="work-overview" id="workOverview"></p>
             <div class="work-meta-grid" id="workMeta"></div>
-
-            <!-- TMDB rating -->
-            <div id="tmdbRatingWrap" style="margin-top:18px;display:none">
-              <div style="font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim);margin-bottom:4px">Nota TMDB</div>
-              <div style="font-size:1.4rem;font-weight:800;color:var(--star)" id="tmdbRatingVal"></div>
+            <div class="tmdb-rating-wrap" id="tmdbRatingWrap">
+              <div class="tmdb-rating-label">Nota TMDB</div>
+              <div class="tmdb-rating-value" id="tmdbRatingVal"></div>
             </div>
           </div>
         </div>
 
-        <!-- Cast -->
-        <div class="section" id="castSection" style="margin-top:40px;display:none">
+        <div class="section work-cast-section" id="castSection">
           <div class="section-head">
             <h2 class="section-title">Elenco</h2>
           </div>
@@ -84,16 +80,13 @@
 
         <hr class="divider">
 
-        <!-- Review Section -->
         <div class="section">
           <div class="review-box" id="reviewBox">
             <div class="review-box-header">
               <div class="review-box-title" id="reviewBoxTitle">Minha review</div>
               <div id="reviewBoxActions"></div>
             </div>
-            <div class="review-box-body" id="reviewBoxBody">
-              <!-- Injected by JS: display or form -->
-            </div>
+            <div class="review-box-body" id="reviewBoxBody"></div>
           </div>
         </div>
 
@@ -101,35 +94,35 @@
     </div>
   </div>
 
-  <!-- Error state -->
-  <div class="container" id="errorState" style="display:none">
+  <div class="container work-detail-hidden" id="errorState">
     <div class="empty-state">
       <div class="empty-icon">😕</div>
       <div class="empty-title">Erro ao carregar</div>
       <div class="empty-text" id="errorMsg">Não foi possível carregar os dados desta obra.</div>
-      <a href="search.html" class="btn btn-ghost" style="margin-top:12px">← Voltar</a>
+      <a href="search.html" class="btn btn-ghost error-back-btn">← Voltar</a>
     </div>
   </div>
 
-  <!-- Delete confirm modal -->
   <div class="modal-overlay confirm-modal" id="deleteModal">
     <div class="modal-box">
       <span class="confirm-icon">🗑</span>
       <div class="modal-title">Excluir review?</div>
       <p class="modal-desc">Esta ação não pode ser desfeita.</p>
-      <div class="modal-actions" style="justify-content:center">
-        <button class="btn btn-danger-ghost" id="confirmDeleteBtn">Sim, excluir</button>
-        <button class="btn btn-ghost" onclick="document.getElementById('deleteModal').classList.remove('open')">Cancelar</button>
+      <div class="modal-actions modal-actions-center">
+        <button type="button" class="btn btn-danger-ghost" id="confirmDeleteBtn">Sim, excluir</button>
+        <button type="button" class="btn btn-ghost" onclick="document.getElementById('deleteModal').classList.remove('open')">Cancelar</button>
       </div>
     </div>
   </div>
 
-  <!-- Toast -->
   <div class="toast-wrap" id="toastWrap"></div>
 
   <footer class="site-footer">
     <div class="footer-inner">
-      <div class="footer-brand">film <span>notes</span></div>
+      <div class="footer-brand">
+        <img src="imgs/iconFilmNote-colored.png" alt="">
+        film <span>notes</span>
+      </div>
       <div class="footer-text">Dados: TMDB & Google Books</div>
     </div>
   </footer>

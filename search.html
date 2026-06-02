@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Explorar — FilmNotes</title>
+  <title>Explorar — film notes</title>
+  <link rel="icon" type="image/png" href="imgs/iconFilmNote-colored.png">
+  <link rel="apple-touch-icon" href="imgs/iconFilmNote-colored.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
@@ -14,7 +16,10 @@
   <!-- Navbar -->
   <nav class="site-nav">
     <div class="nav-inner">
-      <a class="nav-brand" href="index.html">film <span>notes</span></a>
+      <a class="nav-brand" href="index.html">
+        <img src="imgs/iconFilmNote-colored.png" alt="">
+        film <span>notes</span>
+      </a>
       <div class="nav-links" id="navLinks">
         <a class="nav-link" href="index.html">Início</a>
         <a class="nav-link" href="reviews.html">Minhas Reviews</a>
@@ -42,11 +47,11 @@
         <span class="icon">&#9906;</span>
         <input type="text" id="searchInput" placeholder="Buscar filmes, séries, livros..." autofocus>
       </div>
-      <div class="type-chips" style="justify-content:flex-start;margin-top:14px">
-        <button class="chip active" data-type="all">Tudo</button>
-        <button class="chip" data-type="movie">🎬 Filmes</button>
-        <button class="chip" data-type="series">📺 Séries</button>
-        <button class="chip" data-type="book">📚 Livros</button>
+      <div class="type-chips">
+        <button type="button" class="chip active" data-type="all">Tudo</button>
+        <button type="button" class="chip" data-type="movie">🎬 Filmes</button>
+        <button type="button" class="chip" data-type="series">📺 Séries</button>
+        <button type="button" class="chip" data-type="book">📚 Livros</button>
       </div>
     </div>
 
@@ -79,7 +84,10 @@
 
   <footer class="site-footer">
     <div class="footer-inner">
-      <div class="footer-brand">film <span>notes</span></div>
+      <div class="footer-brand">
+        <img src="imgs/iconFilmNote-colored.png" alt="">
+        film <span>notes</span>
+      </div>
       <div class="footer-text">Dados: TMDB & Google Books</div>
     </div>
   </footer>

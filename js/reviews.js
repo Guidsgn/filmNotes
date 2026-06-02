@@ -76,7 +76,7 @@ async function render() {
 
   if (!items.length) {
     container.innerHTML = '';
-    empty.style.display = '';
+    empty.removeAttribute('hidden');
     countEl.textContent = '';
     document.getElementById('emptyTitle').textContent =
       activeFilter !== 'all' ? `Nenhuma review de ${Utils.typeLabel(activeFilter).toLowerCase()}` : 'Nenhuma review ainda';
@@ -85,7 +85,7 @@ async function render() {
     return;
   }
 
-  empty.style.display = 'none';
+  empty.setAttribute('hidden', '');
   countEl.textContent = `${items.length} review${items.length !== 1 ? 's' : ''}`;
 
   if (viewMode === 'grid') {

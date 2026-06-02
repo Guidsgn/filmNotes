@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FilmNotes</title>
+  <title>film notes</title>
+  <link rel="icon" type="image/png" href="imgs/iconFilmNote-colored.png">
+  <link rel="apple-touch-icon" href="imgs/iconFilmNote-colored.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
@@ -14,7 +16,10 @@
   <!-- Navbar -->
   <nav class="site-nav">
     <div class="nav-inner">
-      <a class="nav-brand" href="index.html">film <span>notes</span></a>
+      <a class="nav-brand" href="index.html">
+        <img src="imgs/iconFilmNote-colored.png" alt="">
+        film <span>notes</span>
+      </a>
       <div class="nav-links" id="navLinks">
         <a class="nav-link active" href="index.html">Início</a>
         <a class="nav-link" href="reviews.html">Minhas Reviews</a>
@@ -46,10 +51,10 @@
           <input type="text" id="heroSearch" placeholder="Buscar filmes, séries ou livros...">
         </div>
         <div class="type-chips">
-          <button class="chip active" data-type="all">Tudo</button>
-          <button class="chip" data-type="movie">🎬 Filmes</button>
-          <button class="chip" data-type="series">📺 Séries</button>
-          <button class="chip" data-type="book">📚 Livros</button>
+          <button type="button" class="chip active" data-type="all">Tudo</button>
+          <button type="button" class="chip" data-type="movie">🎬 Filmes</button>
+          <button type="button" class="chip" data-type="series">📺 Séries</button>
+          <button type="button" class="chip" data-type="book">📚 Livros</button>
         </div>
       </div>
     </div>
@@ -126,32 +131,15 @@
 
   </main>
 
-  <!-- API Key Modal -->
-  <div class="modal-overlay" id="apiKeyModal">
-    <div class="modal-box">
-      <div class="modal-title">Configurar chave TMDB</div>
-      <p class="modal-desc">
-        Para buscar e exibir dados de <strong>filmes e séries</strong>, você precisa de uma chave de API gratuita do
-        <a href="https://www.themoviedb.org/settings/api" target="_blank">The Movie Database</a>.
-        Crie uma conta gratuita, vá em Configurações → API e copie a chave v3.
-      </p>
-      <div class="form-group">
-        <label class="form-label">Chave de API (v3)</label>
-        <input type="text" class="form-input" id="apiKeyInput" placeholder="Cole sua chave aqui...">
-      </div>
-      <div class="modal-actions">
-        <button class="btn btn-primary" onclick="Utils.saveApiKey()">Salvar</button>
-        <button class="btn btn-ghost" onclick="Utils.closeApiKeyModal()">Cancelar</button>
-      </div>
-    </div>
-  </div>
-
   <!-- Toast -->
   <div class="toast-wrap" id="toastWrap"></div>
 
   <footer class="site-footer">
     <div class="footer-inner">
-      <div class="footer-brand">film <span>notes</span></div>
+      <div class="footer-brand">
+        <img src="imgs/iconFilmNote-colored.png" alt="">
+        film <span>notes</span>
+      </div>
       <div class="footer-text">Reviews pessoais • Dados: TMDB & Google Books</div>
     </div>
   </footer>

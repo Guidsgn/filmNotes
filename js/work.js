@@ -16,8 +16,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function loadWork(id, type) {
   document.getElementById('loadingState').style.display = 'flex';
-  document.getElementById('workContent').style.display = 'none';
-  document.getElementById('errorState').style.display = 'none';
+  document.getElementById('workContent').classList.add('work-detail-hidden');
+  document.getElementById('errorState').classList.add('work-detail-hidden');
 
   try {
     let work;
@@ -43,7 +43,7 @@ async function loadWork(id, type) {
   }
 
   document.getElementById('loadingState').style.display = 'none';
-  document.getElementById('workContent').style.display = '';
+  document.getElementById('workContent').classList.remove('work-detail-hidden');
 }
 
 function renderWork(w) {
@@ -82,12 +82,12 @@ function renderWork(w) {
     </div>`).join('');
 
   if (w.tmdbRating) {
-    document.getElementById('tmdbRatingWrap').style.display = '';
+    document.getElementById('tmdbRatingWrap').style.display = 'block';
     document.getElementById('tmdbRatingVal').textContent = `${w.tmdbRating} / 10`;
   }
 
   if (w.cast?.length) {
-    document.getElementById('castSection').style.display = '';
+    document.getElementById('castSection').style.display = 'block';
     document.getElementById('castRow').innerHTML = w.cast.map(c => `
       <div class="cast-card">
         <div class="cast-photo">
@@ -352,7 +352,7 @@ function setupDeleteModal() {
 function showError(msg, apiKey = false) {
   document.getElementById('loadingState').style.display = 'none';
   document.getElementById('workContent').style.display = 'none';
-  document.getElementById('errorState').style.display = '';
+  document.getElementById('errorState').classList.remove('work-detail-hidden');
   const el = document.getElementById('errorMsg');
   if (apiKey) {
     el.innerHTML = msg + ' <a href="#" style="color:var(--accent);text-decoration:underline" onclick="Utils.openSettingsModal();return false">Configurar →</a>';
