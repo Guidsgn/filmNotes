@@ -9,6 +9,9 @@ const CONFIG = {
   get SUPABASE_KEY() {
     return window.ENV?.SUPABASE_KEY || localStorage.getItem('fn_sb_key') || '';
   },
+  get BOOKS_API_KEY() {
+    return window.ENV?.BOOKS_KEY || localStorage.getItem('fn_books_key') || '';
+  },
   TMDB_BASE: 'https://api.themoviedb.org/3',
   TMDB_IMG_SM: 'https://image.tmdb.org/t/p/w342',
   TMDB_IMG_MD: 'https://image.tmdb.org/t/p/w500',
