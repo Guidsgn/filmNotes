@@ -31,7 +31,7 @@ async function loadWork(id, type) {
 
     renderWork(work);
     renderReviewSection();
-    document.title = `${work.title} — film notes`;
+    document.title = `${work.title} — FilmNotes`;
   } catch (err) {
     console.error(err);
     if (err.message === 'NO_KEY' || String(err).includes('401')) {
