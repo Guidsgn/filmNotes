@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>film notes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="site-nav">
+    <div class="nav-inner">
+      <a class="nav-brand" href="index.html">film <span>notes</span></a>
+      <div class="nav-links" id="navLinks">
+        <a class="nav-link active" href="index.html">Início</a>
+        <a class="nav-link" href="reviews.html">Minhas Reviews</a>
+        <a class="nav-link" href="search.html">Explorar</a>
+      </div>
+      <div class="nav-search">
+        <span class="icon">&#9906;</span>
+        <input type="text" id="navSearchInput" placeholder="Buscar...">
+      </div>
+      <button class="nav-menu-btn" id="navMenuBtn">☰</button>
+    </div>
+  </nav>
+
+  <!-- API Banner -->
+  <div class="api-banner hidden" id="apiBanner">
+    <span>⚠ Chave TMDB não configurada — filmes e séries precisam dela.</span>
+    <a href="#" onclick="Utils.openApiKeyModal();return false;">Configurar agora →</a>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-eyebrow">diário de obras</div>
+      <h1 class="hero-title">Minhas <span class="accent">notas</span><br>sobre obras</h1>
+      <p class="hero-sub">Reviews pessoais de filmes, séries e livros — do jeito que me marcaram.</p>
+      <div class="hero-search-wrap">
+        <div class="search-box">
+          <span class="icon">&#9906;</span>
+          <input type="text" id="heroSearch" placeholder="Buscar filmes, séries ou livros...">
+        </div>
+        <div class="type-chips">
+          <button class="chip active" data-type="all">Tudo</button>
+          <button class="chip" data-type="movie">🎬 Filmes</button>
+          <button class="chip" data-type="series">📺 Séries</button>
+          <button class="chip" data-type="book">📚 Livros</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <div class="stats-bar">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-num" id="statTotal">0</div>
+        <div class="stat-label">Reviews</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" id="statMovies">0</div>
+        <div class="stat-label">Filmes</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" id="statSeries">0</div>
+        <div class="stat-label">Séries</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" id="statBooks">0</div>
+        <div class="stat-label">Livros</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <main class="container">
+
+    <!-- Empty state (shown when no reviews) -->
+    <div class="empty-state" id="emptyState" style="display:none">
+      <div class="empty-icon">✍</div>
+      <div class="empty-title">Nenhuma review ainda</div>
+      <div class="empty-text">Explore obras e comece a registrar o que você acha delas.</div>
+      <a href="search.html" class="btn btn-primary" style="margin-top:8px">Explorar obras</a>
+    </div>
+
+    <!-- Recent reviews -->
+    <section class="section" id="recentSection">
+      <div class="section-head">
+        <h2 class="section-title">Reviews recentes</h2>
+        <a href="reviews.html" class="section-more">Ver todas →</a>
+      </div>
+      <div class="works-grid" id="recentGrid"></div>
+    </section>
+
+    <!-- Movies -->
+    <section class="section" id="moviesSection" style="display:none">
+      <div class="section-head">
+        <h2 class="section-title">🎬 Filmes</h2>
+        <a href="reviews.html?filter=movie" class="section-more">Ver todos →</a>
+      </div>
+      <div class="works-grid" id="moviesGrid"></div>
+    </section>
+
+    <!-- Series -->
+    <section class="section" id="seriesSection" style="display:none">
+      <div class="section-head">
+        <h2 class="section-title">📺 Séries</h2>
+        <a href="reviews.html?filter=series" class="section-more">Ver todas →</a>
+      </div>
+      <div class="works-grid" id="seriesGrid"></div>
+    </section>
+
+    <!-- Books -->
+    <section class="section" id="booksSection" style="display:none">
+      <div class="section-head">
+        <h2 class="section-title">📚 Livros</h2>
+        <a href="reviews.html?filter=book" class="section-more">Ver todos →</a>
+      </div>
+      <div class="works-grid" id="booksGrid"></div>
+    </section>
+
+  </main>
+
+  <!-- API Key Modal -->
+  <div class="modal-overlay" id="apiKeyModal">
+    <div class="modal-box">
+      <div class="modal-title">Configurar chave TMDB</div>
+      <p class="modal-desc">
+        Para buscar e exibir dados de <strong>filmes e séries</strong>, você precisa de uma chave de API gratuita do
+        <a href="https://www.themoviedb.org/settings/api" target="_blank">The Movie Database</a>.
+        Crie uma conta gratuita, vá em Configurações → API e copie a chave v3.
+      </p>
+      <div class="form-group">
+        <label class="form-label">Chave de API (v3)</label>
+        <input type="text" class="form-input" id="apiKeyInput" placeholder="Cole sua chave aqui...">
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-primary" onclick="Utils.saveApiKey()">Salvar</button>
+        <button class="btn btn-ghost" onclick="Utils.closeApiKeyModal()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast-wrap" id="toastWrap"></div>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">film <span>notes</span></div>
+      <div class="footer-text">Reviews pessoais • Dados: TMDB & Google Books</div>
+    </div>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/index.js"></script>
+</body>
+</html>
