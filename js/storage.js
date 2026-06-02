@@ -4,8 +4,8 @@ const Storage = {
   _sb: null,
 
   init() {
-    const url = localStorage.getItem('fn_sb_url');
-    const key = localStorage.getItem('fn_sb_key');
+    const url = CONFIG.SUPABASE_URL;
+    const key = CONFIG.SUPABASE_KEY;
     if (url && key && window.supabase) {
       try {
         this._sb = window.supabase.createClient(url, key);

@@ -1,0 +1,11 @@
+# Credenciais — não commitar
+.env
+.env.local
+js/env.js
+
+# Node
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db

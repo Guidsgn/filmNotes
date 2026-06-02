@@ -1,6 +1,13 @@
 const CONFIG = {
+  // Prioridade: window.ENV (env.js gerado no build) → localStorage (settings modal)
   get TMDB_API_KEY() {
-    return localStorage.getItem('fn_tmdb_key') || '';
+    return window.ENV?.TMDB_KEY || localStorage.getItem('fn_tmdb_key') || '';
+  },
+  get SUPABASE_URL() {
+    return window.ENV?.SUPABASE_URL || localStorage.getItem('fn_sb_url') || '';
+  },
+  get SUPABASE_KEY() {
+    return window.ENV?.SUPABASE_KEY || localStorage.getItem('fn_sb_key') || '';
   },
   TMDB_BASE: 'https://api.themoviedb.org/3',
   TMDB_IMG_SM: 'https://image.tmdb.org/t/p/w342',
