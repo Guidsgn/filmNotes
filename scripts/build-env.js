@@ -8,6 +8,7 @@ const env = {
   SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL || '',
   SUPABASE_KEY: process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || '',
   TMDB_KEY: process.env.TMDB_API_KEY || '',
+  BOOKS_KEY: process.env.GOOGLE_BOOKS_API_KEY || '',
 };
 
 const content = `// Auto-gerado por scripts/build-env.js — não editar manualmente

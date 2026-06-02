@@ -9,7 +9,9 @@ const API = {
   },
 
   async _books(path, params = {}) {
-    const q = new URLSearchParams({ ...params });
+    const key = CONFIG.BOOKS_API_KEY;
+    if (!key) throw new Error('NO_BOOKS_KEY');
+    const q = new URLSearchParams({ key, ...params });
     const res = await fetch(`${CONFIG.GOOGLE_BOOKS}${path}?${q}`);
     if (!res.ok) throw new Error(`Books ${res.status}`);
     return res.json();
@@ -38,16 +40,19 @@ const API = {
   },
 
   async searchBooks(query, startIndex = 0) {
-    const data = await this._books('/volumes', {
-      q: query, maxResults: 20, startIndex,
-      printType: 'books', langRestrict: 'pt',
-    });
-    // Try without language restriction if no results
-    if (!data.items?.length) {
-      const data2 = await this._books('/volumes', { q: query, maxResults: 20, startIndex });
-      return (data2.items || []).map(b => this._bookSnippet(b));
+    try {
+      const data = await this._books('/volumes', {
+        q: query, maxResults: 20, startIndex, printType: 'books', langRestrict: 'pt',
+      });
+      if (!data.items?.length) {
+        const data2 = await this._books('/volumes', { q: query, maxResults: 20, startIndex });
+        return (data2.items || []).map(b => this._bookSnippet(b));
+      }
+      return (data.items || []).map(b => this._bookSnippet(b));
+    } catch (e) {
+      if (e.message === 'NO_BOOKS_KEY') return [];
+      throw e;
     }
-    return (data.items || []).map(b => this._bookSnippet(b));
   },
 
   async searchAll(query) {
@@ -81,8 +86,13 @@ const API = {
   },
 
   async getBookDetails(id) {
-    const data = await this._books(`/volumes/${id}`);
-    return this._bookDetail(data);
+    try {
+      const data = await this._books(`/volumes/${id}`);
+      return this._bookDetail(data);
+    } catch (e) {
+      if (e.message === 'NO_BOOKS_KEY') throw new Error('NO_KEY');
+      throw e;
+    }
   },
 
   // ── FORMATTERS ──────────────────────────────────────────

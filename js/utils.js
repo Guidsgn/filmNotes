@@ -234,6 +234,21 @@ CREATE POLICY "Allow all" ON reviews
           </div>
 
           <div class="settings-section">
+            <div class="settings-section-title">📚 Google Books — livros</div>
+            <div class="form-group" style="margin-bottom:6px">
+              <label class="form-label">Chave de API</label>
+              <div class="input-with-action">
+                <input type="password" class="form-input" id="settingsBooksKey" placeholder="Cole sua chave do Google Books...">
+                <button class="btn btn-ghost btn-sm" onclick="document.getElementById('settingsBooksKey').type = document.getElementById('settingsBooksKey').type === 'password' ? 'text' : 'password'">👁</button>
+              </div>
+            </div>
+            <div style="font-size:0.75rem;color:var(--text-dim)">
+              Crie no <a href="https://console.cloud.google.com/apis/library/books.googleapis.com" target="_blank" style="color:var(--accent)">Google Cloud Console</a>:
+              ative a <strong style="color:var(--text)">Books API</strong> → Credenciais → Criar chave de API.
+            </div>
+          </div>
+
+          <div class="settings-section">
             <div class="settings-section-title">☁ Supabase — banco de dados na nuvem</div>
             <div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:14px;line-height:1.6">
               Persiste suas reviews no Vercel. Crie um projeto grátis em
@@ -278,9 +293,10 @@ CREATE POLICY "Allow all" ON reviews
     this.injectSettingsModal();
     const hasSB = !!(localStorage.getItem('fn_sb_url') && localStorage.getItem('fn_sb_key'));
 
-    document.getElementById('settingsTmdbKey').value = localStorage.getItem('fn_tmdb_key') || '';
-    document.getElementById('settingsSbUrl').value = localStorage.getItem('fn_sb_url') || '';
-    document.getElementById('settingsSbKey').value = localStorage.getItem('fn_sb_key') || '';
+    document.getElementById('settingsTmdbKey').value = CONFIG.TMDB_API_KEY || '';
+    document.getElementById('settingsBooksKey').value = CONFIG.BOOKS_API_KEY || '';
+    document.getElementById('settingsSbUrl').value = CONFIG.SUPABASE_URL || '';
+    document.getElementById('settingsSbKey').value = CONFIG.SUPABASE_KEY || '';
 
     document.getElementById('storageStatus').innerHTML = hasSB
       ? `<div class="storage-badge supabase">☁ Armazenando no Supabase</div>`
@@ -295,11 +311,15 @@ CREATE POLICY "Allow all" ON reviews
 
   saveSettings() {
     const tmdb = document.getElementById('settingsTmdbKey')?.value.trim();
+    const books = document.getElementById('settingsBooksKey')?.value.trim();
     const sbUrl = document.getElementById('settingsSbUrl')?.value.trim();
     const sbKey = document.getElementById('settingsSbKey')?.value.trim();
 
     if (tmdb) localStorage.setItem('fn_tmdb_key', tmdb);
     else localStorage.removeItem('fn_tmdb_key');
+
+    if (books) localStorage.setItem('fn_books_key', books);
+    else localStorage.removeItem('fn_books_key');
 
     if (sbUrl && sbKey) {
       localStorage.setItem('fn_sb_url', sbUrl);
